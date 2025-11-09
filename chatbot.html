@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Enquiry Chatbot</title>
+<style>
+    body {
+        background: linear-gradient(135deg, #007bff, #00bcd4);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .chat-container {
+        width: 400px;
+        height: 550px;
+        background: #fff;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .chat-header {
+        background: #007bff;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .chat-box {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background: #f8f9fa;
+    }
+
+    .message {
+        margin: 8px 0;
+        padding: 10px 14px;
+        border-radius: 18px;
+        max-width: 75%;
+        word-wrap: break-word;
+    }
+
+    .user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+        margin-left: auto;
+    }
+
+    .bot {
+        background: #e9ecef;
+        align-self: flex-start;
+    }
+
+    .chat-input {
+        display: flex;
+        padding: 10px;
+        background: #fff;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 15px;
+        background: #f1f1f1;
+        outline: none;
+        font-size: 15px;
+    }
+
+    .chat-input button {
+        background: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        margin-left: 10px;
+        border-radius: 15px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .chat-input button:hover {
+        background: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">🎓 College Enquiry Chatbot</div>
+    <div class="chat-box" id="chat-box">
+        <div class="message bot">Hello! 👋 I’m your College Assistant.<br>How can I help you today?</div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Type your question...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+const chatBox = document.getElementById("chat-box");
+
+function sendMessage() {
+    const input = document.getElementById("user-input");
+    const message = input.value.trim();
+    if (message === "") return;
+
+    // Show user message
+    appendMessage(message, "user");
+    input.value = "";
+
+    // Get bot reply
+    setTimeout(() => {
+        const reply = getBotReply(message.toLowerCase());
+        appendMessage(reply, "bot");
+    }, 500);
+}
+
+function appendMessage(text, sender) {
+    const msg = document.createElement("div");
+    msg.classList.add("message", sender);
+    msg.innerHTML = text;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Simple bot reply logic
+function getBotReply(input) {
+    if (input.includes("hello") || input.includes("hi")) {
+        return "Hi there! 😊 How can I help you about the college?";
+    } 
+    else if (input.includes("name")) {
+        return "The college name is <b>Graphic Era Hill University</b>.";
+    }
+    else if (input.includes("course") || input.includes("program")) {
+        return "We offer BCA, BBA, B.Tech, MCA, MBA, and many more courses.";
+    }
+    else if (input.includes("bca fee") || input.includes("fees")) {
+        return "The BCA course fee is approximately ₹60,000 per year.";
+    }
+    else if (input.includes("admission")) {
+        return "You can apply online on our official website or visit the admission office.";
+    }
+    else if (input.includes("location") || input.includes("where")) {
+        return "Our campus is located in Dehradun, Uttarakhand.";
+    }
+    else if (input.includes("contact") || input.includes("email")) {
+        return "You can contact us at <b>info@gehu.ac.in</b> or call +91-135-2643421.";
+    }
+    else if (input.includes("thanks") || input.includes("thank you")) {
+        return "You're welcome! 😊 Feel free to ask more questions.";
+    }
+    else if (input.includes("bye")) {
+        return "Goodbye! 👋 Have a great day!";
+    }
+    else {
+        return "Sorry, I didn’t understand that. Please ask about fees, courses, admission, or contact details.";
+    }
+}
+</script>
+
+</body>
+</html>
