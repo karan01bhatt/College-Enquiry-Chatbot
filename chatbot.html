@@ -1,174 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>College Enquiry Chatbot</title>
-<style>
-    body {
-        background: linear-gradient(135deg, #007bff, #00bcd4);
-        font-family: "Poppins", sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEHU Assistant 2026</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4338ca;
+            --accent: #f43f5e;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
 
-    .chat-container {
-        width: 400px;
-        height: 550px;
-        background: #fff;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-    }
+        body {
+            background: #0f172a url('https://unsplash.com') center/cover;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
 
-    .chat-header {
-        background: #007bff;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-size: 20px;
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
+        .main-wrapper {
+            display: flex;
+            width: 1000px;
+            height: 720px;
+            background: var(--glass-bg);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
 
-    .chat-box {
-        flex: 1;
-        padding: 15px;
-        overflow-y: auto;
-        background: #f8f9fa;
-    }
+        .side-panel {
+            width: 35%;
+            background: var(--primary);
+            padding: 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-    .message {
-        margin: 8px 0;
-        padding: 10px 14px;
-        border-radius: 18px;
-        max-width: 75%;
-        word-wrap: break-word;
-    }
+        .side-panel h1 { font-size: 32px; margin: 0; font-weight: 800; line-height: 1.1; }
+        .side-panel p { opacity: 0.9; line-height: 1.6; font-size: 14px; margin-top: 15px; }
 
-    .user {
-        background: #007bff;
-        color: white;
-        align-self: flex-end;
-        margin-left: auto;
-    }
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            border-left: 5px solid var(--accent);
+        }
 
-    .bot {
-        background: #e9ecef;
-        align-self: flex-start;
-    }
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
 
-    .chat-input {
-        display: flex;
-        padding: 10px;
-        background: #fff;
-        border-top: 1px solid #ddd;
-    }
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .chat-input input {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 15px;
-        background: #f1f1f1;
-        outline: none;
-        font-size: 15px;
-    }
+        .online-tag {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-    .chat-input button {
-        background: #007bff;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        margin-left: 10px;
-        border-radius: 15px;
-        cursor: pointer;
-        font-weight: bold;
-    }
+        #chat-box {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8fafc;
+        }
 
-    .chat-input button:hover {
-        background: #0056b3;
-    }
-</style>
+        .msg {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 22px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); }}
+
+        .bot-msg { background: white; color: #1e293b; align-self: flex-start; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .user-msg { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .course-card {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+        }
+
+        .apply-btn {
+            background: var(--accent);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .apply-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 20px rgba(244, 63, 94, 0.4); }
+
+        .input-area {
+            padding: 25px 30px;
+            display: flex;
+            gap: 15px;
+            background: white;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        input {
+            flex: 1;
+            border: 2px solid #e2e8f0;
+            padding: 14px 20px;
+            border-radius: 15px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-<div class="chat-container">
-    <div class="chat-header">🎓 College Enquiry Chatbot</div>
-    <div class="chat-box" id="chat-box">
-        <div class="message bot">Hello! 👋 I’m your College Assistant.<br>How can I help you today?</div>
+<div class="main-wrapper">
+    <div class="side-panel">
+        <div>
+            <h1>GEHU<br>Assistant 2026</h1>
+            <p>Your intelligent gateway to Graphic Era Hill University. Admissions for the <b>Session 2026-27</b> are now open.</p>
+            
+            <div class="stat-card">
+                <b>2026 Placement Goal</b>
+                <div>Target Highest: ₹90+ LPA</div>
+            </div>
+            <div class="stat-card">
+                <b>New for 2026</b>
+                <div>AI & Robotics Research Lab</div>
+            </div>
+        </div>
+        
+        <button class="apply-btn" onclick="alert('Redirecting to 2026 Admission Portal...')">Apply for 2026 Session</button>
     </div>
-    <div class="chat-input">
-        <input type="text" id="user-input" placeholder="Type your question...">
-        <button onclick="sendMessage()">Send</button>
+
+    <div class="chat-section">
+        <div class="chat-header">
+            <div>
+                <span style="font-weight: 700; color: #1e293b; font-size: 18px;">Admission Desk</span><br>
+                <small style="color: #64748b;">Session 2026-27 • Online</small>
+            </div>
+            <span class="online-tag">● ACTIVE</span>
+        </div>
+
+        <div id="chat-box">
+            <div class="msg bot-msg">Hello! 👋 Welcome to the 2026 Admission Helpdesk. Ask me about <b>Fees, Courses, or Placements</b>.</div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="e.g. 'BCA fee' or 'MCA details'..." onkeypress="if(event.key=='Enter') send()">
+            <button class="send-btn" onclick="send()">Send</button>
+        </div>
     </div>
 </div>
 
 <script>
-const chatBox = document.getElementById("chat-box");
+    const box = document.getElementById('chat-box');
 
-function sendMessage() {
-    const input = document.getElementById("user-input");
-    const message = input.value.trim();
-    if (message === "") return;
+    function send() {
+        const input = document.getElementById('user-input');
+        const originalVal = input.value.trim();
+        const val = originalVal.toLowerCase();
+        
+        if(!val) return;
 
-    // Show user message
-    appendMessage(message, "user");
-    input.value = "";
+        appendMsg(originalVal, 'user-msg');
+        input.value = '';
 
-    // Get bot reply
-    setTimeout(() => {
-        const reply = getBotReply(message.toLowerCase());
-        appendMessage(reply, "bot");
-    }, 500);
-}
+        setTimeout(() => {
+            let response = "";
+            
+            // Precise Fee Logic
+            if(val.includes('fee') || val.includes('fees') || val.includes('charge') || val.includes('cost')) {
+                if(val.includes('btech') || val.includes('b.tech')) {
+                    response = "The <b>B.Tech</b> fee for 2026 is approx <b>₹1.6L - 2.2L per year</b> depending on the branch.";
+                } else if(val.includes('bca')) {
+                    response = "The <b>BCA</b> fee for 2026 is approx <b>₹85,000 per year</b>.";
+                } else if(val.includes('mca')) {
+                    response = "The <b>MCA</b> fee for 2026 is approx <b>₹1.2L per year</b>.";
+                } else if(val.includes('bhm') || val.includes('hotel')) {
+                    response = "The <b>BHM</b> fee for 2026 is approx <b>₹1.1L per year</b>.";
+                } else if(val.includes('bba') || val.includes('mba')) {
+                    response = "The <b>Management</b> fees range from <b>₹1L to 1.8L per year</b> for 2026.";
+                } else {
+                    response = "For which course do you want to know the fee? (e.g., BTech, BCA, MCA, BHM)";
+                }
+            }
+            // Course Info
+            else if(val.includes('course') || val.includes('study')) {
+                response = `Available Courses for 2026:
+                            <div class="course-grid">
+                                <div class="course-card">💻 B.Tech</div>
+                                <div class="course-card">📱 BCA & MCA</div>
+                                <div class="course-card">🏨 BHM</div>
+                                <div class="course-card">💼 BBA & MBA</div>
+                                <div class="course-card">⚖️ Law</div>
+                                <div class="course-card">💊 Pharmacy</div>
+                            </div>`;
+            }
+            else if(val.includes('btech') || val.includes('b.tech')) {
+                response = "<b>B.Tech 2026</b> features new specializations in AI, Cyber Security, and Data Science. Highest package last year was ₹84.8L!";
+            }
+            else if(val.includes('placement')) {
+                response = "In 2026, GEHU continues its streak with 300+ recruiters including Google and Microsoft. The average package is now ₹7.5 LPA.";
+            }
+            else if(val.includes('hi') || val.includes('hello')) {
+                response = "Hi! Ready to join the 2026 batch? Ask me any course or fee related question.";
+            }
+            else {
+                response = "I'm not sure about that. Try asking '<b>BCA fee</b>', '<b>BTech placements</b>', or '<b>List courses</b>'.";
+            }
+            
+            appendMsg(response, 'bot-msg');
+        }, 600);
+    }
 
-function appendMessage(text, sender) {
-    const msg = document.createElement("div");
-    msg.classList.add("message", sender);
-    msg.innerHTML = text;
-    chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// Simple bot reply logic
-function getBotReply(input) {
-    if (input.includes("hello") || input.includes("hi")) {
-        return "Hi there! 😊 How can I help you about the college?";
-    } 
-    else if (input.includes("name")) {
-        return "The college name is <b>Graphic Era Hill University</b>.";
+    function appendMsg(text, type) {
+        const d = document.createElement('div');
+        d.className = `msg ${type}`;
+        d.innerHTML = text;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
     }
-    else if (input.includes("course") || input.includes("program")) {
-        return "We offer BCA, BBA, B.Tech, MCA, MBA, and many more courses.";
-    }
-    else if (input.includes("bca fee") || input.includes("fees")) {
-        return "The BCA course fee is approximately ₹60,000 per year.";
-    }
-    else if (input.includes("admission")) {
-        return "You can apply online on our official website or visit the admission office.";
-    }
-    else if (input.includes("location") || input.includes("where")) {
-        return "Our campus is located in Dehradun, Uttarakhand.";
-    }
-    else if (input.includes("contact") || input.includes("email")) {
-        return "You can contact us at <b>info@gehu.ac.in</b> or call +91-135-2643421.";
-    }
-    else if (input.includes("thanks") || input.includes("thank you")) {
-        return "You're welcome! 😊 Feel free to ask more questions.";
-    }
-    else if (input.includes("bye")) {
-        return "Goodbye! 👋 Have a great day!";
-    }
-    else {
-        return "Sorry, I didn’t understand that. Please ask about fees, courses, admission, or contact details.";
-    }
-}
 </script>
 
 </body>
